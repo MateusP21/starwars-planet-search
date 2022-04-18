@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DataContext } from '../context/DataContext';
 
 export default function Table() {
-  const { data } = useContext(DataContext);
+  const { data, filter: { filterByName } } = useContext(DataContext);
   const header = data.length > 0 && Object.keys(data[0])
     .filter((item) => item !== 'residents')
     .map((item) => item.replace('_', ''));
@@ -20,7 +20,9 @@ export default function Table() {
         </thead>
         <tbody>
           {
-            data.length > 0 && data.map((item) => {
+            data.length > 0 && data.filter(
+              (planet) => planet.name.includes(filterByName.name),
+            ).map((item) => {
               const { name,
                 rotation_period: rotationPeriod,
                 orbital_period: orbitalPeriod,

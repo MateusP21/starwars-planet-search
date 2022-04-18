@@ -21,22 +21,19 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   const handleSearch = (filterValue) => {
-    const { filterByName: { name } } = filter;
     setFilter((prevState) => ({
       ...prevState,
       filterByName: { name: filterValue },
     }));
-
-    setData(data.filter((item) => item.name.includes(name)));
   };
 
   return (
-    <DataContext.Provider value={ { data, handleSearch } }>
+    <DataContext.Provider value={ { data, handleSearch, filter } }>
       {children}
     </DataContext.Provider>
   );
 };
 
 DataProvider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
