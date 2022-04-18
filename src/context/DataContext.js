@@ -5,7 +5,11 @@ export const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
-
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(ENDPOINT);
@@ -15,8 +19,18 @@ export const DataProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  const handleSearch = (filterValue) => {
+    const { filterByName: { name } } = filter;
+    setFilter((prevState) => ({
+      ...prevState,
+      filterByName: { name: filterValue },
+    }));
+
+    setData(data.filter((item) => item.name.includes(name)));
+  };
+
   return (
-    <DataContext.Provider value={ { data } }>
+    <DataContext.Provider value={ { data, handleSearch } }>
       {children}
     </DataContext.Provider>
   );

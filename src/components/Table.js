@@ -4,7 +4,8 @@ import { DataContext } from '../context/DataContext';
 export default function Table() {
   const { data } = useContext(DataContext);
   const header = data.length > 0 && Object.keys(data[0])
-    .map((item) => item.replace('_', ' '));
+    .filter((item) => item !== 'residents')
+    .map((item) => item.replace('_', ''));
 
   return (
     <div>
@@ -29,7 +30,6 @@ export default function Table() {
                 terrain,
                 surface_water: surfaceWater,
                 population,
-                residents,
                 films,
                 created,
                 edited, url } = item;
@@ -45,7 +45,6 @@ export default function Table() {
                   <td>{terrain}</td>
                   <td>{surfaceWater}</td>
                   <td>{population}</td>
-                  <td>{residents}</td>
                   <td>{films}</td>
                   <td>{created}</td>
                   <td>{edited}</td>
