@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
 export const DataContext = createContext({});
@@ -34,4 +35,8 @@ export const DataProvider = ({ children }) => {
       {children}
     </DataContext.Provider>
   );
+};
+
+DataProvider.propTypes = {
+  children: PropTypes.element.isRequired,
 };
