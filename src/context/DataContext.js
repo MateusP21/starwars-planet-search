@@ -6,7 +6,7 @@ export const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+
   // const [selectedFilter, setSelectedFilter] = useState('byColumnAndValues');
   const [filter, setFilter] = useState({
     filterByName: {
@@ -80,8 +80,8 @@ export const DataProvider = ({ children }) => {
   const handleData = (type) => {
     if (!type) return data;
     const filterList = {
-      byName: filterByPlanetName(filteredData),
-      byColumnAndValues: filterByColumnAndValues(filteredData),
+      byName: filterByPlanetName(data),
+      byColumnAndValues: filterByColumnAndValues(data),
     };
 
     return filterList[type];
@@ -93,7 +93,6 @@ export const DataProvider = ({ children }) => {
         handleData,
         handleSearch,
         filter,
-
         filterByPlanetName,
         filterByColumnAndValues,
         submitFilter,

@@ -5,8 +5,7 @@ import Filter from './Filter';
 export default function Table() {
   const {
     data,
-    // filterByPlanetName,
-    // filterByColumnAndValues,
+
     handleData,
     filter: { selectedFilter } } = useContext(DataContext);
   const header = data.length > 0 && Object.keys(data[0])
