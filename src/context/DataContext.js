@@ -57,6 +57,21 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
+  const cleanFilters = () => {
+    setFilter((prevState) => ({
+      ...prevState,
+      filterByNumericValues: [],
+    }));
+  };
+
+  const removeFilter = (filterName) => {
+    setFilter((prevState) => ({
+      ...prevState,
+      filterByNumericValues: prevState
+        .filterByNumericValues.filter(({ column }) => column !== filterName),
+    }));
+  };
+
   const filterByColumnAndValues = (currentData) => {
     const { filterByNumericValues } = filter;
     let temp = [...currentData];
@@ -91,6 +106,8 @@ export const DataProvider = ({ children }) => {
         handleData,
         handleSearch,
         filter,
+        cleanFilters,
+        removeFilter,
         filterByPlanetName,
         filterByColumnAndValues,
         submitFilter,
