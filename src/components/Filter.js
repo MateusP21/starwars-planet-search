@@ -51,6 +51,7 @@ export default function Filter() {
         <input
           data-testid="value-filter"
           type="number"
+          value={ selectedField.value }
           onChange={ (e) => setSelectedField(
             { ...selectedField, value: e.target.value },
           ) }
@@ -69,6 +70,7 @@ export default function Filter() {
           type="button"
           onClick={ () => cleanFilters() }
           data-testid="button-remove-filters"
+
         >
           Remover Filtros
 
