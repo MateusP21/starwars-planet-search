@@ -22,7 +22,6 @@ export const DataProvider = ({ children }) => {
       const res = await fetch(ENDPOINT);
       const json = await res.json();
       setData(json.results);
-      setFilteredData(json.results);
     };
     fetchData();
   }, []);

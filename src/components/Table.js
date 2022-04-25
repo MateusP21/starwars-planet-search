@@ -5,7 +5,6 @@ import Filter from './Filter';
 export default function Table() {
   const {
     data,
-
     handleData,
     filter: { selectedFilter } } = useContext(DataContext);
   const header = data.length > 0 && Object.keys(data[0])
