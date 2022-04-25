@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { DataContext } from '../context/DataContext';
 
 export default function Filter() {
-  const { submitFilter } = useContext(DataContext);
+  const { submitFilter, filter: { defaultColumns } } = useContext(DataContext);
   const [userFilters, setUserFilters] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -25,11 +25,18 @@ export default function Filter() {
         name="column"
         id=""
       >
-        <option value="population">population</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="diameter">diameter</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="surface_water">surface_water</option>
+        {
+          defaultColumns.map(
+            (element, index) => (
+              <option
+                key={ index }
+                value={ element }
+              >
+                {element}
+              </option>),
+          )
+        }
+
       </select>
 
       <select
