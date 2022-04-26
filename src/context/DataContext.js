@@ -14,6 +14,10 @@ export const DataProvider = ({ children }) => {
       name: '',
     },
     selectedFilter: '',
+    order: {
+      column: '',
+      sort: '',
+    },
     filterByNumericValues: [],
     defaultColumns: ['population',
       'rotation_period',
@@ -25,7 +29,11 @@ export const DataProvider = ({ children }) => {
     const fetchData = async () => {
       const res = await fetch(ENDPOINT);
       const json = await res.json();
-      setData(json.results);
+      // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+      const dataSorted = json.results.sort(
+        (current, next) => current.name.localeCompare(next.name),
+      );
+      setData(dataSorted);
     };
     fetchData();
   }, []);
@@ -46,6 +54,34 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
+  const handleOrdernation = (selectedOrder) => {
+    setFilter((prevState) => ({
+      ...prevState,
+      order: {
+        column: selectedOrder.column,
+        sort: selectedOrder.order,
+      },
+    }));
+
+    const unknownValues = data.filter(
+      (planet) => planet[selectedOrder.column] === 'unknown',
+    );
+
+    if (selectedOrder.order === 'ASC') {
+      const ascOrdernation = data.filter(
+        (planet) => planet[selectedOrder.column] !== 'unknown',
+      ).sort((current, next) => (
+        Number(current[selectedOrder.column]) - Number(next[selectedOrder.column])));
+      setData([...ascOrdernation, ...unknownValues]);
+    } else {
+      const descOrdernation = data.filter(
+        (planet) => planet[selectedOrder.column] !== 'unknown',
+      ).sort((current, next) => (
+        Number(next[selectedOrder.column]) - Number(current[selectedOrder.column])));
+      setData([...descOrdernation, ...unknownValues]);
+    }
+  };
+
   const submitFilter = (userFilters) => {
     setFilter((prevState) => ({
       ...prevState,
@@ -64,17 +100,18 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
-  const removeFilter = (filterName) => {
+  const removeFilter = (currentFilter) => {
     setFilter((prevState) => ({
       ...prevState,
       filterByNumericValues: prevState
-        .filterByNumericValues.filter(({ column }) => column !== filterName),
+        .filterByNumericValues.filter(({ column }) => column !== currentFilter.column),
+      defaultColumns: [...prevState.defaultColumns, currentFilter.column],
     }));
   };
 
   const filterByColumnAndValues = (currentData) => {
     const { filterByNumericValues } = filter;
-    let temp = [...currentData];
+    let temp = filterByPlanetName(currentData);
     filterByNumericValues.forEach((currentFilter) => {
       const { column, comparison, value } = currentFilter;
       temp = temp.filter((planet) => {
@@ -105,11 +142,10 @@ export const DataProvider = ({ children }) => {
         data,
         handleData,
         handleSearch,
+        handleOrdernation,
         filter,
         cleanFilters,
         removeFilter,
-        filterByPlanetName,
-        filterByColumnAndValues,
         submitFilter,
       } }
     >
