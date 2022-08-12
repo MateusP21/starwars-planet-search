@@ -12,7 +12,7 @@ export default function Table() {
     .map((item) => item.replace('_', ''));
 
   return (
-    <div>
+    <div className="table-container">
       <Filter />
       <table>
         <thead>
